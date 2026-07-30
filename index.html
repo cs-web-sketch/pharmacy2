@@ -2,7 +2,6 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport is set, but the layout is strictly 1920x1080 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>中央薬局 - お呼出ディスプレイ</title>
     <style>
@@ -26,106 +25,109 @@
             padding: 0;
         }
 
-        /* STRICTLY 1920x1080 */
-        html, body {
-            width: 1920px;
-            height: 1080px;
-            overflow: hidden;
+        body {
             font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
             background-color: var(--bg-color);
-            background-image: radial-gradient(#e2e8f0 1.5px, transparent 1.5px);
-            background-size: 30px 30px;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
             color: var(--text-main);
             display: flex;
             flex-direction: column;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
         }
 
         /* Header */
         header {
             background: var(--primary);
             color: white;
-            padding: 25px 50px;
-            height: 120px;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             z-index: 10;
             flex-shrink: 0;
         }
 
         header h1 {
-            font-size: 3.5rem;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
             font-weight: 700;
             letter-spacing: 0.1em;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 12px;
         }
 
         .header-icon {
             background: white;
             color: var(--primary);
-            width: 60px;
-            height: 60px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            font-size: 2.5rem;
+            font-size: 1.3rem;
+            flex-shrink: 0;
         }
 
         .time {
-            font-size: 3.5rem;
+            font-size: clamp(1.2rem, 2.5vw, 2rem);
             font-weight: 500;
             font-variant-numeric: tabular-nums;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
 
         /* Main Content Layout */
         main {
             flex: 1;
             display: flex;
-            padding: 40px 50px;
-            gap: 50px;
+            padding: 1.5rem 2rem;
+            gap: 2rem;
+            min-height: 0; /* Important for flex child sizing */
         }
 
         /* Left Side: Calling Now */
         .calling-section {
-            flex: 0 0 45%;
+            flex: 0 0 42%;
             background: var(--card-bg);
-            border-radius: 32px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.04);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
-            border: 6px solid transparent;
+            border: 4px solid transparent;
             transition: all 0.3s ease;
+            padding: 1.5rem;
         }
 
         .calling-section.active-border {
             border-color: var(--primary-light);
-            box-shadow: 0 0 60px rgba(20, 184, 166, 0.3);
+            box-shadow: 0 0 40px rgba(20, 184, 166, 0.2);
         }
 
         .calling-label {
-            font-size: 3.5rem;
+            font-size: clamp(1.3rem, 2.5vw, 2.2rem);
             font-weight: 600;
             color: var(--primary);
-            margin-bottom: 40px;
+            margin-bottom: 1.5rem;
             background: #f1f5f9;
-            padding: 15px 60px;
+            padding: 8px 30px;
             border-radius: 50px;
+            text-align: center;
+            white-space: nowrap;
         }
 
         .calling-number {
-            font-size: 20rem;
+            font-size: clamp(6rem, 14vw, 13rem);
             font-weight: 800;
             color: var(--accent);
             line-height: 1;
-            letter-spacing: -8px;
+            letter-spacing: -4px;
         }
 
         /* Ping animation for new call */
@@ -142,57 +144,59 @@
         .waiting-section {
             flex: 1;
             background: var(--card-bg);
-            border-radius: 32px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.04);
+            padding: 1.5rem 2rem;
             display: flex;
             flex-direction: column;
+            min-height: 0;
+            overflow: hidden; /* Prevent overflow */
         }
 
         .waiting-section h2 {
-            font-size: 2.8rem;
+            font-size: clamp(1.3rem, 2.2vw, 1.8rem);
             color: var(--text-main);
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #f1f5f9;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #f1f5f9;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            flex-shrink: 0;
         }
         
         .waiting-section h2 span {
-            font-size: 1.8rem;
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
             color: var(--text-muted);
             font-weight: normal;
         }
 
+        /* Dynamic Grid Container: NO SCROLL, strictly fits area */
         .number-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 20px;
-            overflow-y: auto;
-            align-content: start;
-            padding-right: 15px; /* For scrollbar */
             flex: 1;
+            display: grid;
+            gap: 1rem;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* No scrollbar! */
         }
-
-        /* Scrollbar styling */
-        .number-grid::-webkit-scrollbar { width: 12px; }
-        .number-grid::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 6px; }
-        .number-grid::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 6px; }
 
         .num-card {
             background: #f8fafc;
-            border: 3px solid #e2e8f0;
-            border-radius: 20px;
-            padding: 25px 10px;
-            text-align: center;
-            font-size: 3.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.5rem, 3.5vh, 2.8rem);
             font-weight: 700;
             color: var(--text-main);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            width: 100%;
+            height: 100%;
         }
 
         /* States for cards */
@@ -200,17 +204,14 @@
             background: var(--primary);
             border-color: var(--primary);
             color: white;
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(15, 118, 110, 0.4);
+            box-shadow: 0 8px 16px rgba(15, 118, 110, 0.25);
         }
         
         .num-card.status-calling::after {
             content: "お呼出中";
             position: absolute;
-            bottom: 5px;
-            left: 0;
-            right: 0;
-            font-size: 1.2rem;
+            bottom: 4px;
+            font-size: clamp(0.6rem, 1.2vh, 0.85rem);
             font-weight: normal;
             color: rgba(255,255,255,0.9);
         }
@@ -219,14 +220,13 @@
             background: var(--done-bg);
             border-color: transparent;
             color: var(--done-text);
-            box-shadow: none;
         }
 
         /* Ticker Footer */
         .ticker-wrapper {
             background: #1e293b;
             color: white;
-            height: 90px;
+            height: clamp(3rem, 6vh, 4rem);
             display: flex;
             align-items: center;
             position: relative;
@@ -237,47 +237,48 @@
         .ticker-label {
             background: var(--accent);
             color: white;
-            padding: 0 40px;
+            padding: 0 1.8rem;
             height: 100%;
             display: flex;
             align-items: center;
             font-weight: bold;
-            font-size: 2.2rem;
+            font-size: clamp(1rem, 1.8vw, 1.3rem);
             z-index: 2;
             position: absolute;
             left: 0;
             top: 0;
-            box-shadow: 6px 0 15px rgba(0,0,0,0.3);
-            letter-spacing: 2px;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.2);
+            letter-spacing: 1px;
+            white-space: nowrap;
         }
 
         .ticker-label::after {
             content: '';
             position: absolute;
-            right: -25px;
+            right: -12px;
             top: 0;
-            border-top: 45px solid transparent;
-            border-bottom: 45px solid transparent;
-            border-left: 25px solid var(--accent);
+            border-top: 2rem solid transparent;
+            border-bottom: 2rem solid transparent;
+            border-left: 12px solid var(--accent);
         }
 
         .ticker-content {
-            padding-left: 100%; /* Start off-screen */
+            padding-left: 100%;
             display: inline-block;
             white-space: nowrap;
-            font-size: 2.4rem;
-            animation: ticker 30s linear infinite;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            animation: ticker 35s linear infinite;
         }
 
         .ticker-item {
             display: inline-block;
-            margin-right: 80px;
+            margin-right: 4rem;
         }
 
         .ticker-item::before {
             content: "◆";
             color: var(--primary-light);
-            margin-right: 20px;
+            margin-right: 0.8rem;
         }
 
         @keyframes ticker {
@@ -285,6 +286,24 @@
             100% { transform: translateX(-100%); }
         }
 
+        /* Responsive adjustments for narrow screens (Tablets & Mobile) */
+        @media (max-width: 820px) {
+            main {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            .calling-section {
+                flex: 0 0 auto;
+                padding: 1.5rem 1rem;
+            }
+            .calling-number {
+                font-size: clamp(5rem, 15vw, 8rem);
+            }
+            .waiting-section {
+                flex: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -307,7 +326,7 @@
         <section class="waiting-section">
             <h2>お薬お渡し待ち <span>順次お呼び出しいたします</span></h2>
             <div class="number-grid" id="grid-container">
-                <!-- JavaScript will populate cards here -->
+                <!-- Dynamically calculated grid cards will be inserted here -->
             </div>
         </section>
     </main>
@@ -335,84 +354,100 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // 2. Simulation Logic
-        const startNum = 145; // Start of the sequence
-        const endNum = 175;   // End of the sequence
-        let currentNum = 153; // Number currently being called
-        
-        const grid = document.getElementById('grid-container');
+        // 2. State Variables
+        const startNum = 101; 
+        const totalNumCount = 100; // 101 to 200
+        let currentNum = 135; // Currently called number
+
+        const gridContainer = document.getElementById('grid-container');
         const mainNumber = document.getElementById('main-number');
         const callingBox = document.getElementById('calling-box');
-        
-        // Dictionary to store card elements
-        const cardElements = {};
 
-        // Initialize Grid
-        function initGrid() {
-            grid.innerHTML = '';
-            for (let i = startNum; i <= endNum; i++) {
+        let maxDisplayItems = 12; // Default, will be recalculated
+
+        // 3. Dynamic Grid Calculation based on available screen space
+        function calculateGridCapacity() {
+            const width = gridContainer.clientWidth;
+            const height = gridContainer.clientHeight;
+
+            if (width === 0 || height === 0) return;
+
+            // Target dimensions for cards
+            const targetWidth = width < 480 ? 80 : 120;  // Card width target
+            const targetHeight = height < 400 ? 55 : 80; // Card height target
+
+            const gap = 16; // 1rem gap
+
+            // Calculate columns and rows that fit inside without scroll
+            let cols = Math.max(2, Math.floor((width + gap) / (targetWidth + gap)));
+            let rows = Math.max(2, Math.floor((height + gap) / (targetHeight + gap)));
+
+            // Apply calculated grid layout
+            gridContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            gridContainer.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+
+            maxDisplayItems = cols * rows;
+
+            // Re-render items
+            renderGrid();
+        }
+
+        // 4. Render Grid Items strictly within capacity
+        function renderGrid() {
+            gridContainer.innerHTML = '';
+
+            // Calculate range of numbers to show
+            // Show a few completed ones and upcoming ones around currentNum
+            const pastCount = Math.floor(maxDisplayItems * 0.25); // Show ~25% completed numbers
+            let start = Math.max(startNum, currentNum - pastCount);
+            let end = start + maxDisplayItems - 1;
+
+            for (let i = start; i <= end; i++) {
                 const card = document.createElement('div');
                 card.className = 'num-card';
                 card.innerText = i;
-                
-                // Pre-set styles based on current number
+
                 if (i < currentNum) {
                     card.classList.add('status-done');
                 } else if (i === currentNum) {
                     card.classList.add('status-calling');
-                    mainNumber.innerText = i;
                 }
-                
-                grid.appendChild(card);
-                cardElements[i] = card;
+
+                gridContainer.appendChild(card);
             }
         }
 
-        // Call the next number
+        // 5. Call Next Number Procedure
         function callNextNumber() {
-            // Mark previous as done
-            if (cardElements[currentNum]) {
-                cardElements[currentNum].classList.remove('status-calling');
-                cardElements[currentNum].classList.add('status-done');
-            }
-
-            // Increment or reset
             currentNum++;
-            if (currentNum > endNum) {
-                // Loop back for demo purposes
+            if (currentNum > startNum + totalNumCount) {
                 currentNum = startNum;
-                // Reset all cards to default visually
-                Object.values(cardElements).forEach(card => {
-                    card.className = 'num-card';
-                });
             }
 
-            // Update Main Display with Animation
+            // Update Main Calling Display
             mainNumber.innerText = currentNum;
-            
-            // Re-trigger CSS animation
+
+            // Trigger Animation
             mainNumber.classList.remove('pop-anim');
             callingBox.classList.remove('active-border');
-            
-            // Trigger reflow to restart animation
-            void mainNumber.offsetWidth; 
-            
+            void mainNumber.offsetWidth; // Force reflow
             mainNumber.classList.add('pop-anim');
             callingBox.classList.add('active-border');
 
-            // Highlight new card in grid
-            if (cardElements[currentNum]) {
-                cardElements[currentNum].classList.add('status-calling');
-                // Scroll grid to the new number smoothly
-                cardElements[currentNum].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+            // Update List Display
+            renderGrid();
         }
 
-        // Setup
-        initGrid();
-        
-        // Simulate a new call every 6 seconds to show off the design
-        setInterval(callNextNumber, 6000);
+        // 6. Event Listeners for Responsive Sizing
+        window.addEventListener('resize', calculateGridCapacity);
+
+        // Initial setup
+        mainNumber.innerText = currentNum;
+        // Wait for DOM layout then calculate grid
+        setTimeout(calculateGridCapacity, 50);
+
+        // Simulation interval (Every 5 seconds)
+        setInterval(callNextNumber, 5000);
 
     </script>
 </body>
